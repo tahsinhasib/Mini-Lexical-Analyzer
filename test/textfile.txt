@@ -1,0 +1,7 @@
+int myNum = "15";
+myNum = 10; 
+float my = '123.54';
+float num = 232.4233;
+char c = 'd';
+'A'
+cout << myNum;  
