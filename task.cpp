@@ -41,13 +41,7 @@ bool isDouble(string word) {
     return hasDecimal;
 }
 bool isOperator(char ch) {
-    char operators[] = "+-*/%=<>&|^";
-    for (char op : operators) {
-        if (ch == op) {
-            return true;
-        }
-    }
-    return false;
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch== '%' || ch == '=' || ch == '<' || ch == '>');
 }
 
 
@@ -88,8 +82,6 @@ void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
     }
     ReadFile.close();
 }
-
-
 
 void IdentifyConstants() {
     string str; ifstream ReadFile("files/src.txt"); 
@@ -137,10 +129,32 @@ void IdentifyConstants() {
     ReadFile.close();
 }
 
+void IdentifyOperators() {
+    ifstream ReadFile("files/src.txt"); 
 
-void IdentuifyOperators() {
+    char ch;
+    string currentOperator;
+    bool insideString = false;
     
+    while (ReadFile.get(ch)) {
+        // Check if we are inside a string
+        if (ch == '\"') {
+            insideString = !insideString;
+        }
+        // If not inside a string, check for operators
+        if (!insideString && isOperator(ch)) {
+            currentOperator += ch;
+        } 
+        else {
+            // If we were accumulating an operator, print it
+            if (!currentOperator.empty()) {
+                cout << currentOperator << " ";
+                currentOperator.clear();
+            }
+        }
+    }
 }
+
 
 int main()
 {
@@ -162,8 +176,8 @@ int main()
     IdentifyKeywords(cppKeywords, cppKeywordsSize);
     cout << "\nConstants: ";
     IdentifyConstants();
-    cout << "\n";
-    IdentuifyOperators();
+    cout << "\nOperators: ";
+    IdentifyOperators();
     
 
     return 0;
