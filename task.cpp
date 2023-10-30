@@ -53,7 +53,9 @@ bool isPunctuation(char ch) {
             ch == '^' || ch == '_' || ch == '`' || ch == '{' ||
             ch == '|' || ch == '}' || ch == '~');
 }
-
+bool isIdentifierCharacter(char ch) {
+    return isalnum(ch) || ch == '_';
+}
 
 void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
     string str; ifstream ReadFile("files/src.txt");
@@ -191,7 +193,37 @@ void IdentifyPunctuation() {
 }
 
 void IdentifyIdentifiers() {
+    string str; ifstream ReadFile("files/src.txt"); 
     
+    bool isInsideFunction = false;
+
+    while (getline(ReadFile, str)) {
+        string current;
+
+        for (char ch : str) {
+            if (isIdentifierCharacter(ch)) {
+                current += ch;
+            }
+            else {
+                if (!current.empty()) {
+                    if (isalpha(current[0]) || current[0] == '_') {
+                        if (!isInsideFunction) {
+                            cout << "Variable: " << current << " ";
+                        }
+                        else {
+                            cout << "Function: " << current << " ";
+                            isInsideFunction = false;
+                        }
+                    }
+                    else if (current[0] == '(') {
+                        isInsideFunction = true;
+                    }
+                    current.clear();
+                }
+            }
+        }
+        
+    }
 }
 
 int main()
@@ -218,6 +250,8 @@ int main()
     IdentifyOperators();
     cout << "\nPunctuation: ";
     IdentifyPunctuation();   
+    cout << "\nIdentifiers: ";
+    IdentifyIdentifiers();
 
     return 0;
 }
