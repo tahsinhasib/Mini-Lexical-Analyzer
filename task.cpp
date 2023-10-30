@@ -43,7 +43,16 @@ bool isDouble(string word) {
 bool isOperator(char ch) {
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch== '%' || ch == '=' || ch == '<' || ch == '>');
 }
-
+bool isPunctuation(char ch) {
+    return (ch == '!' || ch ==  '"' || ch == '#' || ch == '$' ||  
+            ch == '%' || ch == '&' || ch == '(' || ch == ')' || 
+            ch == '*' || ch == '+' || ch == ',' || ch == '-' || 
+            ch == '.' || ch == '/' || ch == ':' || ch == ';' ||
+            ch == '<' || ch == '=' || ch == '>' || ch == '?' ||
+            ch == '@' || ch == '[' || ch == ']' ||
+            ch == '^' || ch == '_' || ch == '`' || ch == '{' ||
+            ch == '|' || ch == '}' || ch == '~');
+}
 
 
 void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
@@ -155,6 +164,35 @@ void IdentifyOperators() {
     }
 }
 
+void IdentifyPunctuation() {
+    ifstream ReadFile("files/src.txt"); 
+
+    char ch;
+    string currentPunctuation;
+    bool insideString = false;
+    
+    while (ReadFile.get(ch)) {
+        // Check if we are inside a string
+        if (ch == '\"') {
+            insideString = !insideString;
+        }
+        // If not inside a string, check for operators
+        if (!insideString && isPunctuation(ch)) {
+            currentPunctuation += ch;
+        } 
+        else {
+            // If we were accumulating an operator, print it
+            if (!currentPunctuation.empty()) {
+                cout << currentPunctuation << " ";
+                currentPunctuation.clear();
+            }
+        }
+    }
+}
+
+void IdentifyIdentifiers() {
+    
+}
 
 int main()
 {
@@ -178,7 +216,8 @@ int main()
     IdentifyConstants();
     cout << "\nOperators: ";
     IdentifyOperators();
-    
+    cout << "\nPunctuation: ";
+    IdentifyPunctuation();   
 
     return 0;
 }
