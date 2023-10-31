@@ -61,6 +61,8 @@ bool isVariable(string word) {
     return (word == "int" || word == "float" || word == "char" || word == "string" || word == "double" || word == "bool");
 }
 
+
+// function for detecting cpp keywords
 void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
     set<string> keywordsset;
     string str; ifstream ReadFile("files/src.txt");
@@ -102,7 +104,7 @@ void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
     }
     ReadFile.close();
 }
-
+// function for detecting cpp constants
 void IdentifyConstants() {
     set<string> constantsset;
     string str; ifstream ReadFile("files/src.txt"); 
@@ -156,7 +158,7 @@ void IdentifyConstants() {
     }
     ReadFile.close();
 }
-
+// function for detecting cpp operators
 void IdentifyOperators() {
     set<string> operatorsset;
     ifstream ReadFile("files/src.txt"); 
@@ -188,7 +190,7 @@ void IdentifyOperators() {
     }
     ReadFile.close();
 }
-
+// function for detecting cpp punctuation
 void IdentifyPunctuation() {
     set<string> punctuationsset;
     ifstream ReadFile("files/src.txt"); 
@@ -220,7 +222,7 @@ void IdentifyPunctuation() {
     }
     ReadFile.close();
 }
-
+// function for detecting cpp identifiers
 void IdentifyIdentifiers() {
     set<string> identifiersset;
     ifstream ReadFile("files/src.txt");
