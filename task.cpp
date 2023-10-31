@@ -2,6 +2,7 @@
 #include <string.h>
 #include <fstream>
 #include <cctype>
+#include <set>
 using namespace std;
 
 // checking functions
@@ -53,11 +54,15 @@ bool isPunctuation(char ch) {
             ch == '^' || ch == '_' || ch == '`' || ch == '{' ||
             ch == '|' || ch == '}' || ch == '~');
 }
-bool isIdentifierCharacter(char ch) {
-    return isalnum(ch) || ch == '_';
+bool isWhitespace(char ch) {
+    return (ch == ' ' || ch == '\t' || ch == '\n');
+}
+bool isVariable(string word) {
+    return (word == "int" || word == "float" || word == "char" || word == "string" || word == "double" || word == "bool");
 }
 
 void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
+    set<string> keywordsset;
     string str; ifstream ReadFile("files/src.txt");
 
     while (getline(ReadFile, str)) {
@@ -81,7 +86,8 @@ void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
                             }
                         }
                         if (isKeyword) {
-                            cout << word << ", ";
+                            //cout << word << ", ";
+                            keywordsset.insert(word);
                             break;
                         }
 
@@ -91,10 +97,14 @@ void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
             }
         }
     }
+    for (string i : keywordsset) {
+        cout << i << ", ";
+    }
     ReadFile.close();
 }
 
 void IdentifyConstants() {
+    set<string> constantsset;
     string str; ifstream ReadFile("files/src.txt"); 
 
     while (getline(ReadFile, str)) {
@@ -109,7 +119,8 @@ void IdentifyConstants() {
                 if (ch == '"' || ch == '\'') {
                     inString = false;
 
-                    cout << word << "(string)" << ", ";
+                    //cout << word << "(string)" << ", ";
+                    constantsset.insert(word);
                     word.clear();
                 }
             } 
@@ -125,22 +136,29 @@ void IdentifyConstants() {
             } 
             else if (!word.empty()) {
                 if (isInt(word)) {
-                    cout << word << "(integer)" << ", ";
+                    //cout << word << "(integer)" << ", ";
+                    constantsset.insert(word);
                 } 
                 else if (isDouble(word)) {
-                    cout << word << "(double)" << ", ";
+                    //cout << word << "(double)" << ", ";
+                    constantsset.insert(word);
                 }
                 else if (isCharacter(word)) {
-                    cout << word << "(character)" << ", ";
+                    //cout << word << "(character)" << ", ";
+                    constantsset.insert(word);
                 }
                 word.clear();
             }
         }
     }
+    for (string i : constantsset) {
+        cout << i << ", ";
+    }
     ReadFile.close();
 }
 
 void IdentifyOperators() {
+    set<string> operatorsset;
     ifstream ReadFile("files/src.txt"); 
 
     char ch;
@@ -159,14 +177,20 @@ void IdentifyOperators() {
         else {
             // If we were accumulating an operator, print it
             if (!currentOperator.empty()) {
-                cout << currentOperator << " ";
+                //cout << currentOperator << " ";
+                operatorsset.insert(currentOperator);
                 currentOperator.clear();
             }
         }
     }
+    for (string i : operatorsset) {
+        cout << i << ", ";
+    }
+    ReadFile.close();
 }
 
 void IdentifyPunctuation() {
+    set<string> punctuationsset;
     ifstream ReadFile("files/src.txt"); 
 
     char ch;
@@ -185,45 +209,48 @@ void IdentifyPunctuation() {
         else {
             // If we were accumulating an operator, print it
             if (!currentPunctuation.empty()) {
-                cout << currentPunctuation << " ";
+                //cout << currentPunctuation << " ";
+                punctuationsset.insert(currentPunctuation);
                 currentPunctuation.clear();
             }
         }
     }
+    for (string i : punctuationsset) {
+        cout << i << ", ";
+    }
+    ReadFile.close();
 }
 
 void IdentifyIdentifiers() {
-    string str; ifstream ReadFile("files/src.txt"); 
-    
-    bool isInsideFunction = false;
+    set<string> identifiersset;
+    ifstream ReadFile("files/src.txt");
 
-    while (getline(ReadFile, str)) {
-        string current;
+    char ch;
+    string word;
+    bool foundVariable = false;
 
-        for (char ch : str) {
-            if (isIdentifierCharacter(ch)) {
-                current += ch;
+    while (ReadFile.get(ch)) {
+        if (!isWhitespace(ch)) {
+            word += ch;
+        } 
+        else {
+            if (foundVariable && !word.empty()) {
+                //cout << word << " ";
+                identifiersset.insert(word);
             }
+            if (isVariable(word)) {
+                foundVariable = true;
+            } 
             else {
-                if (!current.empty()) {
-                    if (isalpha(current[0]) || current[0] == '_') {
-                        if (!isInsideFunction) {
-                            cout << "Variable: " << current << " ";
-                        }
-                        else {
-                            cout << "Function: " << current << " ";
-                            isInsideFunction = false;
-                        }
-                    }
-                    else if (current[0] == '(') {
-                        isInsideFunction = true;
-                    }
-                    current.clear();
-                }
+                foundVariable = false;
             }
+            word.clear();
         }
-        
     }
+    for (string i : identifiersset) {
+        cout << i << ", ";
+    }
+    ReadFile.close();
 }
 
 int main()

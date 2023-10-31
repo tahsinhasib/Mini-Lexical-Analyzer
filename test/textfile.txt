@@ -5,3 +5,15 @@ float num = 232.4233;
 char c = 'd';
 'A'
 cout << myNum;  
+void Punc() {
+    cout << "never";
+}
+void Func() {
+    cout << "never";
+}
+void Addition() {
+    cout << "never";
+}
+void Sub() {
+    cout << "never";
+}

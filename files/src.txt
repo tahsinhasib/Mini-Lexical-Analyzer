@@ -5,6 +5,7 @@ float num = 232.4233;
 char c = 'd';
 'A'
 cout << myNum;  
+bool truthtable = false;
 
 for (int j = 0; j<= 200; j++) {
     cout << "nigga" << "\n";
