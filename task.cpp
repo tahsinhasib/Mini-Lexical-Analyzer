@@ -42,17 +42,17 @@ bool isDouble(string word) {
     return hasDecimal;
 }
 bool isOperator(char ch) {
-    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch== '%' || ch == '=' || ch == '<' || ch == '>');
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '&' || 
+            ch == '/' || ch== '%' || ch == '=' || ch == '<' || 
+            ch == '>');
 }
 bool isPunctuation(char ch) {
     return (ch == '!' || ch ==  '"' || ch == '#' || ch == '$' ||  
-            ch == '%' || ch == '&' || ch == '(' || ch == ')' || 
-            ch == '*' || ch == '+' || ch == ',' || ch == '-' || 
-            ch == '.' || ch == '/' || ch == ':' || ch == ';' ||
-            ch == '<' || ch == '=' || ch == '>' || ch == '?' ||
-            ch == '@' || ch == '[' || ch == ']' ||
-            ch == '^' || ch == '_' || ch == '`' || ch == '{' ||
-            ch == '|' || ch == '}' || ch == '~');
+            ch == '(' || ch == ')' || ch == ',' || ch == '.' || 
+            ch == ':' || ch == ';' || ch == '?' || ch == '@' || 
+            ch == '[' || ch == ']' || ch == '^' || ch == '_' || 
+            ch == '`' || ch == '{' || ch == '}' || ch == '|' || 
+            ch == '}' || ch == '~');
 }
 bool isWhitespace(char ch) {
     return (ch == ' ' || ch == '\t' || ch == '\n');
@@ -65,7 +65,7 @@ bool isVariable(string word) {
 // function for detecting cpp keywords
 void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
     set<string> keywordsset;
-    string str; ifstream ReadFile("files/src.txt");
+    string str; ifstream ReadFile("src/code.txt");
 
     while (getline(ReadFile, str)) {
         string word;
@@ -107,7 +107,7 @@ void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {
 // function for detecting cpp constants
 void IdentifyConstants() {
     set<string> constantsset;
-    string str; ifstream ReadFile("files/src.txt"); 
+    string str; ifstream ReadFile("src/code.txt"); 
 
     while (getline(ReadFile, str)) {
         string word;
@@ -161,7 +161,7 @@ void IdentifyConstants() {
 // function for detecting cpp operators
 void IdentifyOperators() {
     set<string> operatorsset;
-    ifstream ReadFile("files/src.txt"); 
+    ifstream ReadFile("src/code.txt"); 
 
     char ch;
     string currentOperator;
@@ -193,7 +193,7 @@ void IdentifyOperators() {
 // function for detecting cpp punctuation
 void IdentifyPunctuation() {
     set<string> punctuationsset;
-    ifstream ReadFile("files/src.txt"); 
+    ifstream ReadFile("src/code.txt"); 
 
     char ch;
     string currentPunctuation;
@@ -225,7 +225,7 @@ void IdentifyPunctuation() {
 // function for detecting cpp identifiers
 void IdentifyIdentifiers() {
     set<string> identifiersset;
-    ifstream ReadFile("files/src.txt");
+    ifstream ReadFile("src/code.txt");
 
     char ch;
     string word;

@@ -1,1 +1,0 @@
-void IdentifyKeywords(string cppKeywords[], int cppKeywordsSize) {

@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+void customFunc() {
+    cout << "Function call";
+}
+
+int main()
+{
+    int myNumInt = "15";
+    myNumInt = 10; 
+    float myFloat = '123.54';
+    float num = 232.4233;
+    char c = 'd';
+    string str = "text";
+    cout << myNum;  
+    bool truthtable = false;
+
+    for (int j = 0; j<= 200; j++) {
+        cout << "loopiteration" << "\n";
+    }
+
+    if (myNumInt > 15) {cout << "Greater than";}
+    else {cout << "Less than";}
+    while (myNumInt < 10) {cout << "whileiteration";}
+
+    customFunc();
+}
